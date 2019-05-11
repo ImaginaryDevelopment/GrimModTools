@@ -58,7 +58,7 @@ module Demolitionist =
       notImplemented
     ]
   }
-module Occulist =
+module Occultist =
   let theme = GD
   module Skills =
     let notImplemented =
@@ -86,7 +86,41 @@ module Occulist =
       }
   open Skills
   let cls = {
-    name= "Occulist"
+    name= "Occultist"
+    theme= theme
+    skills=[
+      notImplemented
+    ]
+  }
+module Nightblade =
+  let theme = GD
+  module Skills =
+    let notImplemented =
+      {
+        name="not implemented"
+        usage= Active
+        tags = [
+        //   Damage acid
+        //   Damage bleeding
+        //   Damage burn
+        //   Damage chaos
+        //   Damage decay
+        //   Damage cold
+        //   Damage electrocute
+        //   Damage fire
+        //   Damage lightning
+        //   Damage physical
+        //   Damage pierce
+        //   Damage poison
+        //   Damage trauma
+        //   Damage vitality
+          Damage weapon
+        ]
+        mods = []
+      }
+  open Skills
+  let cls = {
+    name= "Nightblade"
     theme= theme
     skills=[
       notImplemented
