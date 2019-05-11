@@ -8,35 +8,38 @@ open Fulma
 open Data
 open Schema
 open Components
-type Model = {
-    ClassInclude : string list
-}
-let init =
-    {
-        ClassInclude = List.empty
-    }
+// type Model = {
+//     ClassInclude : string list
+// }
+// let init =
+//     {
+//         ClassInclude = List.empty
+//     }
 
-type Message =
-    |ChangeClassFilter of string
+// type Message =
+//     |ChangeClassFilter of string
 
 type AppProps = AppProps
 type AppState = {ClassFilter : string}
+let classDrop onChange =
+    let kvs = gdClasses |> List.map(fun cls -> cls.name, cls.name)
+    select (("No class filter",""):: kvs) None onChange
 type App(initProps:AppProps) =
-    inherit React.Component<AppProps,obj>(initProps)
+    inherit React.Component<AppProps,AppState>(initProps)
     do base.setInitState {ClassFilter=""}
     override x.render() =
         div [
 
         ] [
-            str "yay app"
+            str x.state.ClassFilter
+            classDrop (fun e ->
+                printfn "Changing"
+                x.setState(fun s p ->
+                    {s with ClassFilter=e}))
         ]
 let inline app props = ofType<App,_,_> props []
 let content:React.ReactElement =
-    let classDrop =
-        let kvs = gdClasses |> List.map(fun cls -> cls.name, cls.name)
-        select (("No class filter",""):: kvs) None ignore
     div [Class "container-fluid"] [
-        classDrop
         app(AppProps)
         table [Class "table table-dark"] [
             thead [] [
@@ -67,6 +70,4 @@ let content:React.ReactElement =
             )
 
         ]
-        str "hello components"
-        classDrop
     ]
