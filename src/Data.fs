@@ -101,6 +101,7 @@ module Storm =
           Damage frostburn
           Damage lightning
           Damage vitality
+          Damage weapon
           // DirectConversion {Source = Physical;Target=Lightning}
         ]
         mods = []
@@ -122,7 +123,11 @@ module Earth =
         name="not implemented"
         usage= Active
         tags = [
-          Damage aether
+          Damage burn
+          Damage chaos
+          Damage fire
+          Damage physical
+          Damage weapon
           // DirectConversion {Source = Physical;Target=Lightning}
         ]
         mods = []
@@ -135,12 +140,95 @@ module Earth =
       notImplemented
     ]
   }
+module Defender =
+  let theme = Titan
+  module Skills =
+    let notImplemented =
+      {
+        name="not implemented"
+        usage= Active
+        tags = [
+          Damage bleeding
+          Damage physical
+          Damage trauma
+          Damage weapon
+          // DirectConversion {Source = Physical;Target=Lightning}
+        ]
+        mods = []
+      }
+  open Skills
+  let cls = {
+    name="Defender"
+    theme=Titan
+    skills=[
+      notImplemented
+    ]
+  }
+module Warfare =
+  let theme = Titan
+  module Skills =
+    let notImplemented =
+      {
+        name="not implemented"
+        usage= Active
+        tags = [
+          Damage bleeding
+          Damage physical
+          Damage pierce
+          Damage trauma
+          Damage weapon
+          // DirectConversion {Source = Physical;Target=Lightning}
+        ]
+        mods = []
+      }
+  open Skills
+  let cls = {
+    name="Warfare"
+    theme=Titan
+    skills=[
+      notImplemented
+    ]
+  }
+module Hunting =
+  let theme = Titan
+  module Skills =
+    let notImplemented =
+      {
+        name="not implemented"
+        usage= Active
+        tags = [
+          Damage acid
+          Damage bleeding
+          Damage burn
+          Damage cold
+          Damage electrocute
+          Damage fire
+          Damage pierce
+          Damage physical
+          Damage lightning
+          Damage weapon
+          // DirectConversion {Source = Physical;Target=Lightning}
+        ]
+        mods = []
+      }
+  open Skills
+  let cls = {
+    name="Hunting"
+    theme=Titan
+    skills=[
+      notImplemented
+    ]
+  }
 let gdClasses : GdClass list = [
   Classes.Titan.Rogue.cls
   Nature.cls
   Spirit.cls
   Dream.cls
   Storm.cls
+  Earth.cls
+  Defender.cls
+  Warfare.cls
+  Hunting.cls
 ]
 
 let allTags =

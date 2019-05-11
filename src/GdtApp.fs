@@ -35,9 +35,7 @@ let content:React.ReactElement =
                                     yield input [Type "checkbox";Disabled true;Checked hasTag]
                                 ]
                             )
-
                         )
-
                     ]
                 )
             )
