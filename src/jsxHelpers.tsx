@@ -28,39 +28,6 @@ app.UnorderedList = function UnorderedList<T>(props:UnorderedListProps<T>) {
   </ul>);
 };
 
-app.GearBox = props => {
-
-  var makeBox = (slot) => {
-    // for crusaders that aren't owned for instance
-    if(!(props.cruGearQ != null) || !(props.cru.loot != null))
-      return null;
-    var type = props.cru.gear && props.cru.gear[slot];
-    var lootId =  props.cruGearQ["s" + slot];
-    var gearMult = props.cru["s" + slot];
-    var lMult = props.cru["l"+ slot];
-    var rarity = app.Loot.getRarityByItemId(lootId, props.cru.loot);
-    var golden = app.Loot.getIsGolden(lootId, props.cru.loot) ? " golden" : "";
-    var classes = "rarity rarity" + rarity + golden;
-    var titling = "";
-    // console.log({type,lootId,gearMult,lMult,rarity,golden,classes,slot});
-    if(gearMult){
-      titling += gearMult +" ";
-    }
-    titling +=type || "gear data for crusader not found";
-    if(lMult)
-      titling+= "\r\nLegendaryFactor:" + lMult;
-    titling +="\r\nrarity:" + rarity;
-    if(golden)
-      titling+= golden;
-    if(lootId)
-      titling +="\r\nlootId:" + lootId;
-
-    return (<div className={classes} title={titling} />);
-  };
-  var result = (<div className="rarities">{makeBox(0)}{makeBox(1)}{makeBox(2)}</div>);
-  return result;
-};
-app.GearBox.displayName = "GearBox";
 
 var TextAreaInput2 = props =>
 (<textarea
@@ -312,43 +279,4 @@ class Pane extends React.Component<PaneProps,PaneState> {
 };
 app.Pane = Pane;
 
-/**
- * @typedef Tag
- * @property {string} id
- */
-/**
- * @typedef {Object} Crusader - a crusader object
- * @property {string} id
- * @property {Array<string>} tags
- */
-var TagCountsComponent = app.TagCountsComponent =
-/**
- *
- * @param {Array<string>} missionTagIds
- * @param {Array<Crusader>} crusaders
- * @param {Array<string>|undefined} filterTags
- * @param {function|undefined} onFilterTagClick
- */
-(missionTagIds:Tag[], crusaders:Crusader[], filterTags:Tag[] | undefined, onFilterTagClick:any) =>
-{
-    var tagCounts: JSX.Element[]= [];
-    missionTagIds.map(tagId => {
-        var count = crusaders.map(function (crusader){
-            return crusader.tags.indexOf(tagId) != -1 ? 1 : 0;
-        }).reduce((a,b) =>  a + b, 0);
-        var tag:string = tagId as any;
-        var classes = "img_tag";
-        if(filterTags && filterTags[tagId]){
-          classes += " active";
-        }
-        tagCounts.push(
-          <span
-            key={tag}
-            className={classes}
-            title={tag}
-            onClick={onFilterTagClick ? onFilterTagClick.bind(self,tagId): null}
-            >{count}</span>);
-    });
-    return tagCounts;
-}
 })(findJsParent(), false);
