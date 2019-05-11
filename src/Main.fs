@@ -109,6 +109,15 @@ let frame titleText content data =
             Fulma.Container.container [] [
                 header
                 content
+                div [][
+                    str "Useful links"
+                    ul [] [
+                        li [][a [Href "https://www.grimdawn.com/forums/showthread.php?t=77514"][str "Mod forum post" ]]
+                        li [][ str "Not mod compatible, but useful";ul [] [
+                            li[][a [Href "https://www.grimdawn.com/forums/showthread.php?t=35240"][str "Grim Dawn Item Assistant"]]
+                        ]]
+                    ]
+                ]
                 footer [] [
                     let today = System.DateTime.Now
                     yield str <| sprintf "v0.0.1 - %i-%i-%i" today.Month today.Day today.Year
