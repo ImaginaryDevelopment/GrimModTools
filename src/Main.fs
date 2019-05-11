@@ -69,7 +69,7 @@ let frame titleText content data =
         ]
     ]
 
-let content = div [][ str "hello"]
+let content = Components.content
 let render() =
     // let content =
     //     IO.readFile markdownPath
