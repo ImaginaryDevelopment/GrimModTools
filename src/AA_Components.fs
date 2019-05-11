@@ -1,13 +1,38 @@
 module Components
 open Fable.Import
+open Fable.Helpers.React
+open Fable.Helpers.React.Props
+open Fulma
 
-open Fable.React.Props
-module R = Fable.React
 let select values selected =
-    R.div [] [
-        R.select[
+    div [] [
+        Dropdown.dropdown[
+
+        ][
+            Dropdown.menu [][
+                Dropdown.content []
+                    [
+                        Dropdown.Item.a [] [str "Item 1"]
+                    ]
+            ]
+
+        ]
+        select[
         ][]
     ]
 
 
-let content:React.ReactElement = div [] [str "hello components"]
+let content:React.ReactElement = div [] [
+    str "hello components"
+    Dropdown.dropdown[
+
+    ][
+        Dropdown.menu [][
+            Dropdown.content []
+                [
+                    Dropdown.Item.a [] [str "Item 1"]
+                ]
+        ]
+
+    ]
+    ]
