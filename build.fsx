@@ -8,7 +8,6 @@ open System
 open System.Diagnostics
 open System.IO
 open System.Text.RegularExpressions
-open Fake
 open Fake.Core
 open Fake.IO
 // open Fake.IO.Globbing
@@ -141,7 +140,7 @@ let watchAllTheThings items =
         try
             toFlush.Dispose()
         with ex ->
-            tracefn "watch disposable failure : %s" ex.Message
+            Trace.WriteLine <| sprintf "watch disposable failure : %s" ex.Message
     )
 ()
 
@@ -151,9 +150,11 @@ module Proc =
 
     let findCmd cmd =
         let processResult =
-            ExecProcessAndReturnMessages (fun psi ->
-                psi.FileName <- "where"
-                psi.Arguments <- quoteIfNeeded cmd
+            Process.execWithResult (fun psi ->
+                { psi with
+                    FileName = "where"
+                    Arguments = Fake.Core.Process.quoteIfNeeded cmd
+                }
             ) (TimeSpan.FromSeconds 2.)
         if processResult.OK then
             // require the result not be a directory
@@ -163,12 +164,12 @@ module Proc =
                 |> Seq.filter (File.Exists)
                 |> Seq.filter (fun x -> x.EndsWith ".bat" || x.EndsWith ".exe" || x.EndsWith ".cmd")
                 |> Seq.tryHead
-            if processResult.Messages.Count > 1 then
+            if processResult.Messages.Length > 1 then
                 warn (sprintf "found multiple items matching '%s'" cmd)
-                trace (processResult.Messages |> String.Delimit ";")
+                Trace.WriteLine (processResult.Messages |> String.Delimit ";")
             match cmdPath with
             | Some path ->
-                trace (sprintf "found %s at %s" cmd path)
+                Trace.WriteLine (sprintf "found %s at %s" cmd path)
                 Some path
             | None ->
                 warn "where didn't return a valid file"
@@ -242,13 +243,13 @@ module Proc =
         let tempFilePath = System.IO.Path.GetTempFileName()
         // could also redirect error stream with 2> tempErrorFilePath
         // see also http://www.robvanderwoude.com/battech_redirection.php
-        let resultCode = ExecProcessElevated "cmd" (sprintf "/c %s %s > %s" cmd args tempFilePath) timeOut
-        trace "reading output results of runElevated"
+        let resultCode = Fake.ProcessHelper.ExecProcessElevated "cmd" (sprintf "/c %s %s > %s" cmd args tempFilePath) timeOut
+        Trace.WriteLine "reading output results of runElevated"
         let outputResults = File.ReadAllLines tempFilePath
         File.Delete tempFilePath
         let processResult = ProcessResult.New resultCode (outputResults |> Seq.map ConsoleMessage.CreateOut |> List.ofSeq)
         (String.Delimit "\r\n" outputResults)
-        |> trace
+        |> Trace.WriteLine
         processResult
 
     type FindOrInstallResult =
@@ -276,17 +277,21 @@ module Node =
                 | Some x -> x, false
                 // can't capture output with true
                 | None -> "npm", true
-            trace (sprintf "npm filename is %s" filename)
-            ExecProcess (fun psi ->
-                psi.FileName <- filename
-                psi.Arguments <-
-                    match args with
-                    | null | "" -> "install"
-                    | x -> sprintf "install %s" args
-                psi.UseShellExecute <- useShell
+            Trace.WriteLine (sprintf "npm filename is %s" filename)
+            Process.execSimple (fun psi ->
+                {psi with
+                    FileName = filename
+                    Arguments =
+                        match args with
+                        | null | "" -> "install"
+                        | x -> sprintf "install %s" args
+                    UseShellExecute = useShell
+                }
             ) (TimeSpan.FromMinutes 1.)
         resultCode
 ()
+
+open Fake.IO.Globbing.Operators
 
 module Tasks =
     open Newtonsoft.Json.Linq
@@ -296,8 +301,8 @@ module Tasks =
     let fixupNodeTypes () =
         let path = "node_modules/@types/node/index.d.ts"
         File.ReadAllText path
-        |> replace "declare var global: NodeJS.Global;" "declare var global: NodeJS.Global | any;"
-        |> replace "declare var module: NodeModule;" "declare var module: NodeModule | any;"
+        |> String.replace "declare var global: NodeJS.Global;" "declare var global: NodeJS.Global | any;"
+        |> String.replace "declare var module: NodeModule;" "declare var module: NodeModule | any;"
         |> fun text -> File.WriteAllText(path, text)
 
     let compileTS failForExitCode = fun (changes:FileChange seq option) ->
@@ -306,8 +311,8 @@ module Tasks =
             let dtsPath = "node_modules/@types/node/index.d.ts"
             dtsPath
             |> File.ReadAllText
-            |> replace "declare var global: NodeJS.Global;" "declare var global: NodeJS.Global | any;"
-            |> replace "declare var module: NodeModule;" "declare var module: NodeModule | any;"
+            |> String.replace "declare var global: NodeJS.Global;" "declare var global: NodeJS.Global | any;"
+            |> String.replace "declare var module: NodeModule;" "declare var module: NodeModule | any;"
             |> fun text -> File.WriteAllText(dtsPath,text)
         fixupDTsFiles()
         let compileTS (relPath:string) =
@@ -370,7 +375,7 @@ module Tasks =
 
             let cmd,args = "node_modules/.bin/tsc.cmd",  relPath::"--listEmittedFiles"::configArgs |> Seq.filter(String.IsNullOrWhiteSpace >> not) |> String.Delimit " "
             let fullText = sprintf "%s %s" cmd args
-            trace fullText
+            Trace.WriteLine fullText
             let result,_ = Proc.runWithOutput cmd args (TimeSpan.FromSeconds 3.)
             Proc.printVerboseResult (Some {ErrorForeColor=ConsoleColor.Red; ProblemRegex=Regex("error") |> Some}) "TypeScript" (Some fullText) result
             if failForExitCode && result.ExitCode <> 0 then
@@ -387,7 +392,7 @@ module Tasks =
         let coffeeGlob = !! "src/**/*.coffee" ++ "test/**/*.coffee"
 
         let compileCoffee relPath =
-            trace <| sprintf "CompileCoffee:%s" relPath
+            Trace.WriteLine <| sprintf "CompileCoffee:%s" relPath
             let generateMaps = relPath |> String.ContainsI "test" |> not
             let ``top-level function wrapper`` = false
             let suppressGeneratedByHeader = true
@@ -422,20 +427,18 @@ module Tasks =
         ()
 ()
 
-Target "Test" (Tasks.test (fun r -> failwithf "Task failed: %i" r.ExitCode))
+Fake.TargetHelper.Target "Test" (Tasks.test (fun r -> failwithf "Task failed: %i" r.ExitCode))
 
-Target "Coffee" (Tasks.makeCoffee)
+Fake.TargetHelper.Target "Coffee" (Tasks.makeCoffee)
 
-Target "Tsc" (fun _ -> Tasks.compileTS true None)
+Fake.TargetHelper.Target "Tsc" (fun _ -> Tasks.compileTS true None)
 
-open Fake.IO.Globbing.Operators
-open Fake.IO.GlobbingPattern
 // Targets
-Target "Watch" (fun _ ->
+Fake.TargetHelper.Target "Watch" (fun _ ->
     let tsWatch = !! "src/**/*.tsx?" ++ "test/**/*.tsx?" -- "**/*.d.ts"
     tsWatch |> String.Delimit ";"
     |> sprintf "tsWatch:%s"
-    |> trace
+    |> Trace.WriteLine
     watchAllTheThings [
         // type WatchItParams = {Files:string; FRunOnce: FileChange seq option -> unit; RunImmediately:bool }
             {Files= tsWatch;FRunOnce = (fun changesOpt -> Tasks.compileTS false (changesOpt)); RunImmediately = true}
@@ -451,7 +454,7 @@ Target "Watch" (fun _ ->
 )
 
 //this also installs things that are listed in package.json
-Target "SetupNode" (fun _ ->
+Fake.TargetHelper.Target "SetupNode" (fun _ ->
     // goal: install and setup everything required for any node dependencies this project has
     // including nodejs
 
@@ -459,13 +462,13 @@ Target "SetupNode" (fun _ ->
     let chocoPath =
         let fInstall () =
             let resultCode =
-                ExecProcessElevated
+                Fake.ProcessHelper.ExecProcessElevated
                     "@powershell"
                     """-NoProfile -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))" && SET "PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin" """
                     (TimeSpan.FromMinutes 3.)
             resultCode
             |> sprintf "choco install script returned %i"
-            |> trace
+            |> Trace.WriteLine
             if resultCode <> 0 then
                 failwithf "Task failed"
             // choco is installled, we think
@@ -480,7 +483,7 @@ Target "SetupNode" (fun _ ->
     let nodePath =
         let fInstall () =
             let results = Proc.runElevated "choco" "install nodejs -y" (TimeSpan.FromSeconds 3.)
-            trace (sprintf "%A" results)
+            Trace.WriteLine (sprintf "%A" results)
         match Proc.findOrInstall "node" fInstall with
         | Some (x,_) -> x
         | None -> failwithf "nodejs was installed, in order for node to be found or used, this process has to be restarted"
@@ -494,25 +497,27 @@ Target "SetupNode" (fun _ ->
             | Some x -> x, false
             // can't capture output with true
             | None -> "npm", true
-        trace (sprintf "npm filename is %s" filename)
-        ExecProcess (fun psi ->
-            psi.FileName <- filename
-            psi.Arguments <- "install"
-            psi.UseShellExecute <- useShell
+        Trace.WriteLine (sprintf "npm filename is %s" filename)
+        Fake.Core.Process.execSimple (fun psi ->
+            {psi with
+                FileName = filename
+                Arguments = "install"
+                UseShellExecute = useShell
+            }
             ) (TimeSpan.FromMinutes 1.)
     printfn "finished result Code is %A" resultCode
-    trace (sprintf "finished result Code is %A" resultCode)
+    Trace.WriteLine (sprintf "finished result Code is %A" resultCode)
     ()
 )
-Target "NpmRestore" (fun _ ->
+Fake.TargetHelper.Target "NpmRestore" (fun _ ->
     Node.npmInstall null
     |> ignore
 )
 
 // this runs npm install to download packages listed in package.json
-For "Test" ["SetupNode";"Coffee"]
-Target "Default" (fun _ ->
-    trace "Hello World from FAKE"
+Fake.AdditionalSyntax.For "Test" ["SetupNode";"Coffee"]
+Fake.TargetHelper.Target "Default" (fun _ ->
+    Trace.WriteLine "Hello World from FAKE"
 )
 
-RunTargetOrDefault "Default"
+Fake.AdditionalSyntax.RunTargetOrDefault "Default"
