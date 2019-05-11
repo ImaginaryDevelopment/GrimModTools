@@ -6,6 +6,7 @@
     <Compile Include="A_Helpers.fs" />
     <Compile Include="AA_Components.fs" />
     <Compile Include="Data.fs" />
+    <Compile Include="GdtApp.fs" />
     <Compile Include="Main.fs" />
     <Content Include="css/global.css" />
   </ItemGroup>

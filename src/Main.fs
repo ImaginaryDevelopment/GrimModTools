@@ -140,7 +140,7 @@ let render() =
     //     |> parseMarkdownAsReactEl "content"
     let data =
         createTable()
-    frame "Grim Dawn - Mod Tools" content data
+    frame "Grim Dawn - Mod Tools" GdtApp.content data
     |> parseReactStatic
     |> IO.writeFile indexPath
     IO.readFile "src/js/ga.js"

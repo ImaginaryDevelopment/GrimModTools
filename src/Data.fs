@@ -1,4 +1,5 @@
 module Data
+
 type Tag =
   |TagConversion
   // requires shield, 2h, ranged, dual,etc...
@@ -10,13 +11,11 @@ type Theme =
   |Titan
   |Other
 
-[<Pojo>]
 type Skill = {
   name: string
   tags: Tag list
 }
 
-[<Pojo>]
 type GdClass = {
   name:string
   theme:Theme
@@ -25,12 +24,12 @@ type GdClass = {
 
 let gdClasses : GdClass list = [
   {
-    name:"Rogue",
-    theme:"Titan",
-    skills: [
+    name="Rogue"
+    theme=Titan
+    skills= [
       {
-        name: "Calculated Strike",
-        tags: [
+        name= "Calculated Strike"
+        tags= [
         ]
       }
     ]
