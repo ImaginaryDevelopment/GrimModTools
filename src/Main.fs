@@ -133,7 +133,7 @@ let frame titleText content data =
         ]
     ]
 
-let content = Components.content
+let content = GdtApp.content
 let render() =
     // let content =
     //     IO.readFile markdownPath
