@@ -1,11 +1,10 @@
-group Build
-    source https://api.nuget.org/v3/index.json
-    framework: netstandard2.0
-    storage: none
+source https://nuget.org/api/v2
+storage:none
+framework:netstandard2.0,netcoreapp2.0
 
-    nuget Fake.DotNet.AssemblyInfoFile
-    nuget fake.io.zip
-    nuget FSharp.Core
-    nuget Fake.Core.Target
-    nuget Fake.DotNet.Cli
-    nuget Fake.IO.FileSystem
+nuget Fable.Core
+nuget Fable.PowerPack
+nuget Fable.React
+nuget Fable.Import.Browser
+nuget Fable.Import.Node
+nuget Fulma
