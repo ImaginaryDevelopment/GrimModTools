@@ -7,11 +7,23 @@ open Fulma
 open Data
 open Schema
 open Components
+type Model = {
+    ClassInclude : string list
+}
+let init =
+    {
+        ClassInclude = List.empty
+    }
+
+type Message =
+    |ChangeClassFilter of string
+
 let content:React.ReactElement =
     let classDrop =
         let kvs = gdClasses |> List.map(fun cls -> cls.name, cls.name)
-        select kvs None ignore
+        select (("No class filter",""):: kvs) None ignore
     div [Class "container-fluid"] [
+        classDrop
         table [Class "table table-dark"] [
             thead [] [
                 tr [] [
@@ -42,6 +54,5 @@ let content:React.ReactElement =
 
         ]
         str "hello components"
-        classDrop
         classDrop
     ]
