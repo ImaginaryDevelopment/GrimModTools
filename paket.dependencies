@@ -1,4 +1,11 @@
-source https://nuget.org/api/v2
+group Build
+    source https://api.nuget.org/v3/index.json
+    framework: netstandard2.0
+    storage: none
 
-nuget FAKE
-nuget Fake.IO.FileSystem
+    nuget Fake.DotNet.AssemblyInfoFile
+    nuget fake.io.zip
+    nuget FSharp.Core
+    nuget Fake.Core.Target
+    nuget Fake.DotNet.Cli
+    nuget Fake.IO.FileSystem

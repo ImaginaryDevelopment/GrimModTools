@@ -6,3 +6,6 @@ chrome.crx
 .paket/
 *.map
 *.d.ts
+.fake/
+bin/
+obj/

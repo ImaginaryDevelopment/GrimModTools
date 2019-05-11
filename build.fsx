@@ -1,20 +1,21 @@
 open Fake.IO
-// include Fake lib
-// printfn "Trying %s" System.Environment.CurrentDirectory
-#r @"packages/FAKE/tools/FakeLib.dll"
-#r @"packages/FAKE/tools/Newtonsoft.Json.dll"
+open System.Text.RegularExpressions
+#r "paket: groupref build //"
+#load "./.fake/build.fsx/intellisense.fsx"
 
+#if !FAKE
+#r "netstandard"
+#r "Facades/netstandard" // https://github.com/ionide/ionide-vscode-fsharp/issues/839#issuecomment-396296095
+#endif
 open System
 open System.Diagnostics
-open System.IO
-open System.Text.RegularExpressions
 open Fake.Core
-open Fake.IO
+open Fake.DotNet
 // open Fake.IO.Globbing
 
 let buildDir = "./bin/"
 let flip f y x = f x y
-let warn msg = Trace.WriteLine (sprintf "WARNING: %s" msg)
+let warn msg = System.Diagnostics.Trace.WriteLine <| sprintf "WARNING: %s" msg
 let (|EndsWithI|_|) (s:string) (x:string) =
     match x with
     | null | "" -> None
@@ -115,7 +116,7 @@ type WatchItParams = {Files:IGlobbingPattern; FRunOnce: FileChange seq option ->
 // setup watcher and return disposable to close it
 let watchIt wip =
     let watcher = wip.Files |> ChangeWatcher.run (fun changes ->
-        Trace.WriteLine <| sprintf "%A" changes
+        printfn "%A" changes
         wip.FRunOnce (Some changes)
     )
     if wip.RunImmediately then
@@ -140,11 +141,12 @@ let watchAllTheThings items =
         try
             toFlush.Dispose()
         with ex ->
-            Trace.WriteLine <| sprintf "watch disposable failure : %s" ex.Message
+            warn <| sprintf "watch disposable failure : %s" ex.Message
     )
 ()
 
 module Proc =
+    open System.IO
     //let execCmd prog args timeout =
     type PrintResultOptions = {ErrorForeColor:ConsoleColor; ProblemRegex: Regex option}
 
@@ -239,15 +241,21 @@ module Proc =
     let showInExplorer path =
         Process.Start("explorer.exe",sprintf "/select, \"%s\"" path)
     // wrapper for fake built-in in case we want the entire process results, not just the exitcode
-    let runElevated cmd args timeOut =
+    // fake elevated might be broke
+    let runElevated cmd args (timeOut:TimeSpan) =
         let tempFilePath = System.IO.Path.GetTempFileName()
         // could also redirect error stream with 2> tempErrorFilePath
         // see also http://www.robvanderwoude.com/battech_redirection.php
-        let resultCode = Fake.ProcessHelper.ExecProcessElevated "cmd" (sprintf "/c %s %s > %s" cmd args tempFilePath) timeOut
+        let result = 
+            Fake.Core.Process.execWithResult (fun pi ->
+                {pi with
+                    FileName="cmd"
+                    Arguments=(sprintf "/c %s %s > %s" cmd args tempFilePath) 
+                }) timeOut
         Trace.WriteLine "reading output results of runElevated"
         let outputResults = File.ReadAllLines tempFilePath
         File.Delete tempFilePath
-        let processResult = ProcessResult.New resultCode (outputResults |> Seq.map ConsoleMessage.CreateOut |> List.ofSeq)
+        let processResult = ProcessResult.New result.ExitCode (outputResults |> Seq.map ConsoleMessage.CreateOut |> List.ofSeq)
         (String.Delimit "\r\n" outputResults)
         |> Trace.WriteLine
         processResult
@@ -295,6 +303,7 @@ open Fake.IO.Globbing.Operators
 
 module Tasks =
     open Newtonsoft.Json.Linq
+    open System.IO
     type JsonConvert = Newtonsoft.Json.JsonConvert
 
     // fix for global and module having multiple meanings, depending on if this is browser, or node code
@@ -427,14 +436,14 @@ module Tasks =
         ()
 ()
 
-Fake.TargetHelper.Target "Test" (Tasks.test (fun r -> failwithf "Task failed: %i" r.ExitCode))
+Fake.Core.Target.create "Test" (Tasks.test (fun r -> failwithf "Task failed: %i" r.ExitCode))
 
-Fake.TargetHelper.Target "Coffee" (Tasks.makeCoffee)
+Fake.Core.Target.create "Coffee" (Tasks.makeCoffee)
 
-Fake.TargetHelper.Target "Tsc" (fun _ -> Tasks.compileTS true None)
+Fake.Core.Target.create "Tsc" (fun _ -> Tasks.compileTS true None)
 
 // Targets
-Fake.TargetHelper.Target "Watch" (fun _ ->
+Fake.Core.Target.create "Watch" (fun _ ->
     let tsWatch = !! "src/**/*.tsx?" ++ "test/**/*.tsx?" -- "**/*.d.ts"
     tsWatch |> String.Delimit ";"
     |> sprintf "tsWatch:%s"
@@ -450,22 +459,20 @@ Fake.TargetHelper.Target "Watch" (fun _ ->
             }
     ]
     ()
-
 )
-
 //this also installs things that are listed in package.json
-Fake.TargetHelper.Target "SetupNode" (fun _ ->
+Target.create "SetupNode" (fun _ ->
     // goal: install and setup everything required for any node dependencies this project has
     // including nodejs
 
     // install Choco
     let chocoPath =
         let fInstall () =
-            let resultCode =
-                Fake.ProcessHelper.ExecProcessElevated
-                    "@powershell"
-                    """-NoProfile -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))" && SET "PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin" """
-                    (TimeSpan.FromMinutes 3.)
+            let resultCode = 1
+                // ProcessHelper.ExecProcessElevated
+                //     "@powershell"
+                //     """-NoProfile -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))" && SET "PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin" """
+                //     (TimeSpan.FromMinutes 3.)
             resultCode
             |> sprintf "choco install script returned %i"
             |> Trace.WriteLine
@@ -509,15 +516,17 @@ Fake.TargetHelper.Target "SetupNode" (fun _ ->
     Trace.WriteLine (sprintf "finished result Code is %A" resultCode)
     ()
 )
-Fake.TargetHelper.Target "NpmRestore" (fun _ ->
+Fake.Core.Target.create "NpmRestore" (fun _ ->
     Node.npmInstall null
     |> ignore
 )
 
 // this runs npm install to download packages listed in package.json
-Fake.AdditionalSyntax.For "Test" ["SetupNode";"Coffee"]
-Fake.TargetHelper.Target "Default" (fun _ ->
+// "SetupNode"
+//     ==> "Coffee"
+//     ==> "Test"
+// Fake.AdditionalSyntax.For "Test" ["SetupNode";"Coffee"]
+Fake.Core.Target.create "Default" (fun _ ->
     Trace.WriteLine "Hello World from FAKE"
 )
-
-Fake.AdditionalSyntax.RunTargetOrDefault "Default"
+Fake.Core.Target.runOrDefault "Default"
