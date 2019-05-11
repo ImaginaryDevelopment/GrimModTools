@@ -3,6 +3,7 @@ open Fable.Import
 open Fable.Core.JsInterop
 open Fable.Helpers.React
 open Fable.Helpers.React.Props
+open Fable.Import
 open Fulma
 open Data
 open Schema
@@ -18,12 +19,25 @@ let init =
 type Message =
     |ChangeClassFilter of string
 
+type AppProps = AppProps
+type AppState = {ClassFilter : string}
+type App(initProps:AppProps) =
+    inherit React.Component<AppProps,obj>(initProps)
+    do base.setInitState {ClassFilter=""}
+    override x.render() =
+        div [
+
+        ] [
+            str "yay app"
+        ]
+let inline app props = ofType<App,_,_> props []
 let content:React.ReactElement =
     let classDrop =
         let kvs = gdClasses |> List.map(fun cls -> cls.name, cls.name)
         select (("No class filter",""):: kvs) None ignore
     div [Class "container-fluid"] [
         classDrop
+        app(AppProps)
         table [Class "table table-dark"] [
             thead [] [
                 tr [] [

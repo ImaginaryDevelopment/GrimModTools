@@ -54,7 +54,7 @@ module Demolitionist =
   let cls = {
     name="Demolitionist"
     theme=theme
-    skills=[
+    skills= [
       notImplemented
     ]
   }

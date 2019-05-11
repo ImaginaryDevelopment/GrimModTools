@@ -6,6 +6,7 @@ let gdClasses : GdClass list = [
   Classes.Grim.NotImplemented.Soldier.cls
   Classes.Grim.NotImplemented.Demolitionist.cls
   Classes.Grim.NotImplemented.Occultist.cls
+  Classes.Grim.NotImplemented.Nightblade.cls
   Classes.Titan.Rogue.cls
   Classes.Titan.NotImplemented.Nature.cls
   Classes.Titan.NotImplemented.Spirit.cls
