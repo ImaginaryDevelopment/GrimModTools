@@ -1,0 +1,297 @@
+/* <!-- CSS Stylesheet --> */
+/* <style type="text/css" id="vbulletin_css"> */
+/**
+* vBulletin 3.8.11 CSS
+* Style: 'Grim Dawn'; Style ID: 1
+*/
+body
+{
+	background: #000000;
+	color: #FFFFFF;
+	font: 12pt verdana, geneva, lucida, 'lucida grande', arial, helvetica, sans-serif;
+	border: 0px 0px 0px 0px;
+	margin: 0px 0px 0px 0px;
+	padding: 0px 0px 10px 0px;
+	background-image:url(https://www.grimdawn.com/webfiles/marginstrip.jpg);
+	background-repeat:repeat-x;
+}
+a:link, body_alink
+{
+	color: #466079;
+}
+a:visited, body_avisited
+{
+	color: #466079;
+}
+a:hover, a:active, body_ahover
+{
+	color: #41719e;
+}
+.page
+{
+	color: #FFFFFF;
+}
+td, th, p, li
+{
+	font: 10pt verdana, geneva, lucida, 'lucida grande', arial, helvetica, sans-serif;
+}
+.tborder
+{
+	background: #0f1014;
+	color: #000000;
+	border: 1px solid #1b2c32;
+}
+.tcat
+{
+	background: #fcfcae url(gdcontent/gradients/gradient_verticalsquare01.gif) repeat-x top left;;
+	color: #dadaaa;
+	font: bold 10pt verdana, geneva, lucida, 'lucida grande', arial, helvetica, sans-serif;
+}
+.tcat a:link, .tcat_alink
+{
+	color: #CC6600;
+	text-decoration: none;
+}
+.tcat a:visited, .tcat_avisited
+{
+	color: #CC6600;
+	text-decoration: none;
+}
+.tcat a:hover, .tcat a:active, .tcat_ahover
+{
+	color: #CC9900;
+	text-decoration: underline;
+}
+.thead
+{
+	background: #303d4b url(gdcontent/gradients/gradient_verticalsquare04.gif) repeat-x top left;;
+	color: #dadaaa;
+	font: bold 11px tahoma, verdana, geneva, lucida, 'lucida grande', arial, helvetica, sans-serif;
+}
+.thead a:link, .thead_alink
+{
+	color: #b18a3b;
+}
+.thead a:visited, .thead_avisited
+{
+	color: #b18a3b;
+}
+.thead a:hover, .thead a:active, .thead_ahover
+{
+	color: #CC9933;
+}
+.tfoot
+{
+	background: #303d4b url(gdcontent/gradients/gradient_verticalsquare04.gif) repeat-x top left;;
+	color: #dadaaa;
+}
+.tfoot a:link, .tfoot_alink
+{
+	color: #b18a3b;
+}
+.tfoot a:visited, .tfoot_avisited
+{
+	color: #b18a3b;
+}
+.tfoot a:hover, .tfoot a:active, .tfoot_ahover
+{
+	color: #CC9933;
+}
+.alt1, .alt1Active
+{
+	background: #15171d;
+	color: #dadaaa;
+}
+.alt2, .alt2Active
+{
+	background: #13151b;
+	color: #dadaaa;
+}
+.inlinemod
+{
+	background: #fcfcae;
+	color: #000000;
+}
+.wysiwyg
+{
+	background: #8b96a1;
+	color: #000000;
+	font: 10pt verdana, geneva, lucida, 'lucida grande', arial, helvetica, sans-serif;
+	margin: 5px 10px 10px 10px;
+	padding: 0px;
+}
+.wysiwyg a:link, .wysiwyg_alink
+{
+	color: #466079;
+}
+.wysiwyg a:visited, .wysiwyg_avisited
+{
+	color: #466079;
+}
+.wysiwyg a:hover, .wysiwyg a:active, .wysiwyg_ahover
+{
+	color: #41719e;
+}
+textarea, .bginput
+{
+	font: 10pt verdana, geneva, lucida, 'lucida grande', arial, helvetica, sans-serif;
+}
+.bginput option, .bginput optgroup
+{
+	font-size: 10pt;
+	font-family: verdana, geneva, lucida, 'lucida grande', arial, helvetica, sans-serif;
+}
+.button
+{
+	font: 11px verdana, geneva, lucida, 'lucida grande', arial, helvetica, sans-serif;
+}
+select
+{
+	font: 11px verdana, geneva, lucida, 'lucida grande', arial, helvetica, sans-serif;
+}
+option, optgroup
+{
+	font-size: 11px;
+	font-family: verdana, geneva, lucida, 'lucida grande', arial, helvetica, sans-serif;
+}
+.smallfont
+{
+	font: 11px verdana, geneva, lucida, 'lucida grande', arial, helvetica, sans-serif;
+}
+.time
+{
+	color: #dadaaa;
+}
+.navbar
+{
+	font: 11px verdana, geneva, lucida, 'lucida grande', arial, helvetica, sans-serif;
+}
+.highlight
+{
+	color: #3cff00;
+	font-weight: bold;
+}
+.fjsel
+{
+	background: #23191c;
+	color: #dadaaa;
+}
+.fjdpth0
+{
+	background: #CCCCCC;
+	color: #000000;
+}
+.panel
+{
+	background: #23191c;
+	color: #dadaaa;
+	padding: 10px;
+	border: 2px outset;
+}
+.panelsurround
+{
+	background: #303d4b;
+	color: #dadaaa;
+}
+legend
+{
+	color: #CCCCCC;
+	font: 11px tahoma, verdana, geneva, lucida, 'lucida grande', arial, helvetica, sans-serif;
+}
+.vbmenu_control
+{
+	background: #23191c;
+	color: #dadaaa;
+	font: bold 11px tahoma, verdana, geneva, lucida, 'lucida grande', arial, helvetica, sans-serif;
+	padding: 3px 6px 3px 6px;
+	white-space: nowrap;
+}
+.vbmenu_control a:link, .vbmenu_control_alink
+{
+	color: #FFFFFF;
+	text-decoration: none;
+}
+.vbmenu_control a:visited, .vbmenu_control_avisited
+{
+	color: #FFFFFF;
+	text-decoration: none;
+}
+.vbmenu_control a:hover, .vbmenu_control a:active, .vbmenu_control_ahover
+{
+	color: #FFFFFF;
+	text-decoration: underline;
+}
+.vbmenu_popup
+{
+	background: #23191c;
+	color: #dadaaa;
+	border: 1px solid #0B198C;
+}
+.vbmenu_option
+{
+	background: #23191c;
+	color: #dadaaa;
+	font: 11px verdana, geneva, lucida, 'lucida grande', arial, helvetica, sans-serif;
+	white-space: nowrap;
+	cursor: pointer;
+}
+.vbmenu_option a:link, .vbmenu_option_alink
+{
+	color: #466079;
+	text-decoration: none;
+}
+.vbmenu_option a:visited, .vbmenu_option_avisited
+{
+	color: #466079;
+	text-decoration: none;
+}
+.vbmenu_option a:hover, .vbmenu_option a:active, .vbmenu_option_ahover
+{
+	color: #41719e;
+	text-decoration: none;
+}
+.vbmenu_hilite
+{
+	background: #23191c;
+	color: #dadaaa;
+	font: 11px verdana, geneva, lucida, 'lucida grande', arial, helvetica, sans-serif;
+	white-space: nowrap;
+	cursor: pointer;
+}
+.vbmenu_hilite a:link, .vbmenu_hilite_alink
+{
+	color: #FFFFFF;
+	text-decoration: none;
+}
+.vbmenu_hilite a:visited, .vbmenu_hilite_avisited
+{
+	color: #FFFFFF;
+	text-decoration: none;
+}
+.vbmenu_hilite a:hover, .vbmenu_hilite a:active, .vbmenu_hilite_ahover
+{
+	color: #FFFFFF;
+	text-decoration: none;
+}
+/* ***** styling for 'big' usernames on postbit etc. ***** */
+.bigusername { font-size: 14pt; }
+
+/* ***** small padding on 'thead' elements ***** */
+td.thead, th.thead, div.thead { padding: 4px; }
+
+/* ***** basic styles for multi-page nav elements */
+.pagenav a { text-decoration: none; }
+.pagenav td { padding: 2px 4px 2px 4px; }
+
+/* ***** de-emphasized text */
+.shade, a.shade:link, a.shade:visited { color: #777777; text-decoration: none; }
+a.shade:active, a.shade:hover { color: #FF4400; text-decoration: underline; }
+.tcat .shade, .thead .shade, .tfoot .shade { color: #DDDDDD; }
+
+/* ***** define margin and font-size for elements inside panels ***** */
+.fieldset { margin-bottom: 6px; }
+.fieldset, .fieldset td, .fieldset p, .fieldset li { font-size: 11px; }
+.social_group_message
+{
+font: 10pt verdana,geneva,lucida,"lucida grande",arial,helvetica,sans-serif;
+}

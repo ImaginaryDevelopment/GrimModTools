@@ -16,7 +16,7 @@ type IPerson =
 
 // let markdownPath = IO.resolve "${entryDir}/../README.md"
 let dataPath = IO.resolve "${entryDir}/../data/people.json"
-let indexPath = IO.resolve "${entryDir}/../deploy/index.html"
+let indexPath = IO.resolve "${entryDir}/../docs/index.html"
 let createTable() =
     let createHead (headers: string list) =
         thead [] [
@@ -69,7 +69,7 @@ let frame titleText content data =
         ]
     ]
 
-let content = div [][]
+let content = div [][ str "hello"]
 let render() =
     // let content =
     //     IO.readFile markdownPath
