@@ -6,6 +6,7 @@
     <Compile Include="A_Helpers.fs" />
     <Compile Include="AA_Schema.fs" />
     <Compile Include="AAA_Components.fs" />
+    <Compile Include="Classes/Grim/NotImplemented.fs" />
     <Compile Include="Classes/Titan/Rogue.fs" />
     <Compile Include="Classes/Titan/NotImplemented.fs" />
     <Compile Include="Data.fs" />
