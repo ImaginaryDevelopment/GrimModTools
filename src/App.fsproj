@@ -4,7 +4,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="A_Helpers.fs" />
-    <Compile Include="AA_Components.fs" />
+    <Compile Include="AA_Schema.fs" />
+    <Compile Include="AAA_Components.fs" />
+    <Compile Include="Classes/Titan/Rogue.fs" />
     <Compile Include="Data.fs" />
     <Compile Include="GdtApp.fs" />
     <Compile Include="Main.fs" />

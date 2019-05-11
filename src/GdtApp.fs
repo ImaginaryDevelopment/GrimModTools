@@ -5,6 +5,7 @@ open Fable.Helpers.React
 open Fable.Helpers.React.Props
 open Fulma
 open Data
+open Schema
 open Components
 let content:React.ReactElement =
     let classDrop =
