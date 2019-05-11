@@ -1,3 +1,4 @@
+open Fake.IO
 // include Fake lib
 // printfn "Trying %s" System.Environment.CurrentDirectory
 #r @"packages/FAKE/tools/FakeLib.dll"
@@ -8,10 +9,13 @@ open System.Diagnostics
 open System.IO
 open System.Text.RegularExpressions
 open Fake
+open Fake.Core
+open Fake.IO
+// open Fake.IO.Globbing
 
 let buildDir = "./bin/"
 let flip f y x = f x y
-let warn msg = trace (sprintf "WARNING: %s" msg)
+let warn msg = Trace.WriteLine (sprintf "WARNING: %s" msg)
 let (|EndsWithI|_|) (s:string) (x:string) =
     match x with
     | null | "" -> None
@@ -108,11 +112,11 @@ module Disposable =
                 y.Dispose()
         )
 
-type WatchItParams = {Files:FileIncludes; FRunOnce: FileChange seq option -> unit; RunImmediately:bool }
+type WatchItParams = {Files:IGlobbingPattern; FRunOnce: FileChange seq option -> unit; RunImmediately:bool }
 // setup watcher and return disposable to close it
 let watchIt wip =
-    let watcher = wip.Files |> WatchChanges (fun changes ->
-        tracefn "%A" changes
+    let watcher = wip.Files |> ChangeWatcher.run (fun changes ->
+        Trace.WriteLine <| sprintf "%A" changes
         wip.FRunOnce (Some changes)
     )
     if wip.RunImmediately then
@@ -183,9 +187,13 @@ module Proc =
                     warn (sprintf "findCmd didn't find %s" cmd)
                     cmd
         let result =
-            ExecProcessAndReturnMessages (fun f ->
-                f.FileName <- cmd
-                f.Arguments <- args
+            Fake.Core.Process.execWithResult
+            //ExecProcessAndReturnMessages 
+                (fun f ->
+                    {f with
+                        FileName = cmd
+                        Arguments = args
+                    }
             ) (TimeSpan.FromMinutes 1.0)
         result,cmd
 
@@ -238,7 +246,7 @@ module Proc =
         trace "reading output results of runElevated"
         let outputResults = File.ReadAllLines tempFilePath
         File.Delete tempFilePath
-        let processResult = ProcessResult.New resultCode (ResizeArray<_> outputResults) (ResizeArray<_>())
+        let processResult = ProcessResult.New resultCode (outputResults |> Seq.map ConsoleMessage.CreateOut |> List.ofSeq)
         (String.Delimit "\r\n" outputResults)
         |> trace
         processResult
@@ -420,6 +428,8 @@ Target "Coffee" (Tasks.makeCoffee)
 
 Target "Tsc" (fun _ -> Tasks.compileTS true None)
 
+open Fake.IO.Globbing.Operators
+open Fake.IO.GlobbingPattern
 // Targets
 Target "Watch" (fun _ ->
     let tsWatch = !! "src/**/*.tsx?" ++ "test/**/*.tsx?" -- "**/*.d.ts"
