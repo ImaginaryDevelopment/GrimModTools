@@ -7,5 +7,5 @@ let App = (props) =>(
 );
 ReactDOM.render(
     <App  />,
-      document.getElementById('crusaders_holder')
+      document.getElementById('app')
 );
