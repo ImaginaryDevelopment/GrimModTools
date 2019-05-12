@@ -127,7 +127,7 @@ module Wizard =
       }
   open Skills
   let cls = {
-    name="Monk"
+    name="Wizard"
     theme=theme
     skills=[
       notImplemented
