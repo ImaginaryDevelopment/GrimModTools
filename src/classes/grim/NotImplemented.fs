@@ -128,7 +128,7 @@ module Nightblade =
     ]
   }
 module Necromancer =
-  let theme = D3
+  let theme = GD
   module Skills =
     let notImplemented =
       {

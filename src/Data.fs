@@ -10,11 +10,13 @@ let gdClasses : GdClass list = [
   Classes.D3.NotImplemented.Crusader.cls
   Classes.D3.NotImplemented.Necromancer.cls
   Classes.D3.NotImplemented.Barbarian.cls
+
   Classes.Grim.NotImplemented.Soldier.cls
   Classes.Grim.NotImplemented.Demolitionist.cls
   Classes.Grim.NotImplemented.Occultist.cls
   Classes.Grim.NotImplemented.Nightblade.cls
   Classes.Grim.NotImplemented.Necromancer.cls
+
   Classes.Titan.Rogue.cls
   Classes.Titan.NotImplemented.Nature.cls
   Classes.Titan.NotImplemented.Spirit.cls
@@ -24,6 +26,14 @@ let gdClasses : GdClass list = [
   Classes.Titan.NotImplemented.Defender.cls
   Classes.Titan.NotImplemented.Warfare.cls
   Classes.Titan.NotImplemented.Hunting.cls
+
+  Classes.Other.NotImplemented.TerrorKnight.cls
+  Classes.Other.NotImplemented.Elementalist.cls
+  Classes.Other.NotImplemented.Outrider.cls
+  Classes.Other.NotImplemented.Champion.cls
+  Classes.Other.NotImplemented.Riftstalker.cls
+  Classes.Other.NotImplemented.Necrotic.cls
+
 ]
 
 let allTags =

@@ -11,6 +11,7 @@
         <Compile Include="classes\grim\NotImplemented.fs" />
         <Compile Include="classes\titan\NotImplemented.fs" />
         <Compile Include="classes\titan\Rogue.fs" />
+        <Compile Include="classes\other\NotImplemented.fs" />
         <Compile Include="Data.fs" />
         <Compile Include="GdtApp.fs" />
 
