@@ -42,8 +42,7 @@ let gdTable allTags classes : React.ReactElement =
                             str cls.name
                         ]
                         yield! (
-                            classes
-                            |> getAllTags
+                            allTags
                             |> List.map(GdClass.HasSkillWithTag cls)
                             |> List.map(fun hasTag ->
                                 td[][
