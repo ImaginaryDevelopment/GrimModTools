@@ -127,6 +127,114 @@ module Nightblade =
       notImplemented
     ]
   }
+module Arcanist =
+  let theme = GD
+  module Skills =
+    let notImplemented =
+      {
+        name="not implemented"
+        usage= Active
+        tags = [
+          Damage aether
+          // Damage acid
+          // Damage bleeding
+          Damage burn
+          Damage chaos
+          Damage cold
+          // Damage decay
+          Damage electrocute
+          Damage fire
+          Damage frostburn
+          Damage lightning
+          // Damage physical
+          // Damage pierce
+          // Damage poison
+        //   Damage trauma
+          Damage vitality
+          Damage weapon
+        ]
+        mods = []
+      }
+  open Skills
+  let cls = {
+    name= "Arcanist"
+    theme= theme
+    skills=[
+      notImplemented
+    ]
+  }
+module Shaman =
+  let theme = GD
+  module Skills =
+    let notImplemented =
+      {
+        name="not implemented"
+        usage= Active
+        tags = [
+          // Damage aether
+          // Damage acid
+          Damage bleeding
+          // Damage burn
+          // Damage chaos
+          Damage cold
+          Damage decay
+          Damage electrocute
+          // Damage fire
+          // Damage frostburn
+          Damage lightning
+          Damage physical
+          Damage pierce
+          Damage poison
+        //   Damage trauma
+          Damage vitality
+          Damage weapon
+        ]
+        mods = []
+      }
+  open Skills
+  let cls = {
+    name= "Shaman"
+    theme= theme
+    skills=[
+      notImplemented
+    ]
+  }
+module Inquisitor =
+  let theme = GD
+  module Skills =
+    let notImplemented =
+      {
+        name="not implemented"
+        usage= Active
+        tags = [
+          Damage aether
+          // Damage acid
+          // Damage bleeding
+          Damage burn
+          Damage chaos
+          Damage cold
+          // Damage decay
+          Damage electrocute
+          Damage fire
+          Damage frostburn
+          Damage lightning
+          Damage physical
+          Damage pierce
+          // Damage poison
+        //   Damage trauma
+          Damage vitality
+          Damage weapon
+        ]
+        mods = []
+      }
+  open Skills
+  let cls = {
+    name= "Inquisitor"
+    theme= theme
+    skills=[
+      notImplemented
+    ]
+  }
 module Necromancer =
   let theme = GD
   module Skills =
@@ -157,6 +265,41 @@ module Necromancer =
   open Skills
   let cls = {
     name="Necromancer"
+    theme=theme
+    skills=[
+      notImplemented
+    ]
+  }
+module Oathkeeper =
+  let theme = GD
+  module Skills =
+    let notImplemented =
+      {
+        name="not implemented"
+        usage= Active
+        tags = [
+            // Damage aether
+            Damage acid
+            // Damage bleeding
+            Damage burn
+            // Damage cold
+            // Damage decay
+            // Damage electrocute
+            Damage fire
+            // Damage frostburn
+            Damage lightning
+            Damage physical
+            // Damage poison
+            Damage pierce
+            Damage trauma
+            Damage vitality
+            Damage weapon
+        ]
+        mods = []
+      }
+  open Skills
+  let cls = {
+    name="Oathkeeper"
     theme=theme
     skills=[
       notImplemented

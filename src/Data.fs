@@ -15,9 +15,12 @@ let gdClasses : GdClass list = [
   Classes.Grim.NotImplemented.Demolitionist.cls
   Classes.Grim.NotImplemented.Occultist.cls
   Classes.Grim.NotImplemented.Nightblade.cls
+  Classes.Grim.NotImplemented.Arcanist.cls
+  Classes.Grim.NotImplemented.Shaman.cls
+  Classes.Grim.NotImplemented.Inquisitor.cls
   Classes.Grim.NotImplemented.Necromancer.cls
+  Classes.Grim.NotImplemented.Oathkeeper.cls
 
-  Classes.Titan.Rogue.cls
   Classes.Titan.NotImplemented.Nature.cls
   Classes.Titan.NotImplemented.Spirit.cls
   Classes.Titan.NotImplemented.Dream.cls
@@ -25,6 +28,7 @@ let gdClasses : GdClass list = [
   Classes.Titan.NotImplemented.Earth.cls
   Classes.Titan.NotImplemented.Defender.cls
   Classes.Titan.NotImplemented.Warfare.cls
+  Classes.Titan.Rogue.cls
   Classes.Titan.NotImplemented.Hunting.cls
 
   Classes.Other.NotImplemented.TerrorKnight.cls
