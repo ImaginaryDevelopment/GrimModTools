@@ -100,20 +100,21 @@ module Nightblade =
         name="not implemented"
         usage= Active
         tags = [
-        //   Damage acid
-        //   Damage bleeding
+          Damage acid
+          Damage bleeding
         //   Damage burn
-        //   Damage chaos
-        //   Damage decay
-        //   Damage cold
+          Damage chaos
+          Damage cold
+          Damage decay
         //   Damage electrocute
         //   Damage fire
+          Damage frostburn
         //   Damage lightning
-        //   Damage physical
-        //   Damage pierce
-        //   Damage poison
+          Damage physical
+          Damage pierce
+          Damage poison
         //   Damage trauma
-        //   Damage vitality
+          Damage vitality
           Damage weapon
         ]
         mods = []
