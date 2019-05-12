@@ -7,7 +7,7 @@
         "start": "webpack-dev-server --mode development",
         "//": "transpile\": \"babel src -d docs --copy-files",
         "prePublishOnly": "yarn run transpile",
-        "build": "node_modules\\.bin\\webpack --mode production -o docs"
+        "build": "node_modules\\.bin\\webpack --mode production"
     },
     "dependencies": {
         "@babel/core": "^7.3.4",
