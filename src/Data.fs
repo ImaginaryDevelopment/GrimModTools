@@ -9,6 +9,7 @@ let gdClasses : GdClass list = [
   Classes.D3.NotImplemented.Wizard.cls
   Classes.D3.NotImplemented.Crusader.cls
   Classes.D3.NotImplemented.Necromancer.cls
+  Classes.D3.NotImplemented.Barbarian.cls
   Classes.Grim.NotImplemented.Soldier.cls
   Classes.Grim.NotImplemented.Demolitionist.cls
   Classes.Grim.NotImplemented.Occultist.cls
