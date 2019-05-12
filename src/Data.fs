@@ -48,8 +48,8 @@ let getClassTags (cls:GdClass) =
       sk.tags@modTags
     )
 
-let allTags =
-  gdClasses
+let getAllTags classes =
+  classes
   |> List.collect getClassTags
   |> List.distinctBy(Tag.ToDisplay)
   |> List.sortBy(fun x ->

@@ -19,8 +19,8 @@ open Components
 // type Message =
 //     |ChangeClassFilter of string
 
-let classDrop onChange =
-    let kvs = gdClasses |> List.map(fun cls -> cls.name, cls.name)
+let inline classDrop classes onChange =
+    let kvs = classes |> List.map(fun cls -> cls.name, cls.name)
     select (("No class filter",""):: kvs) None onChange
 
 let gdTable allTags classes : React.ReactElement =
@@ -42,7 +42,8 @@ let gdTable allTags classes : React.ReactElement =
                             str cls.name
                         ]
                         yield! (
-                            allTags
+                            classes
+                            |> getAllTags
                             |> List.map(GdClass.HasSkillWithTag cls)
                             |> List.map(fun hasTag ->
                                 td[][
@@ -55,33 +56,45 @@ let gdTable allTags classes : React.ReactElement =
             )
         ]
     ]
+
 type AppProps = AppProps
-type AppState = {ClassFocus: string;ClassCount:int}
+type AppState = {ClassFocus: string;ClassCount:int;ExcludeGrimarillion:bool}
 
 type App(initProps:AppProps) =
     inherit React.Component<AppProps,AppState>(initProps)
-    do base.setInitState {ClassFocus="";ClassCount=gdClasses.Length}
-    member x.getFocusedClass() =
+    do base.setInitState {ClassFocus="";ClassCount=gdClasses.Length;ExcludeGrimarillion=false}
+    member x.getFocusedClass () =
         if System.String.IsNullOrWhiteSpace x.state.ClassFocus then
             None
         else
+            // gdClasses is ok here, we're searching for a selected class
             gdClasses |> List.tryFind(fun c -> c.name = x.state.ClassFocus)
-    member x.getIncludedTags() =
+    member x.getIncludedTags classes  =
         // include only tags that the focused class has
         match x.getFocusedClass() with
-        | None -> allTags
+        | None -> getAllTags classes
         | Some cls -> getClassTags cls |> List.distinctBy Tag.ToDisplay
 
-    override x.render() =
+    override this.render() =
+        let classes = if this.state.ExcludeGrimarillion then gdClasses |> List.filter(fun cls -> cls.theme = Theme.GD) else gdClasses
         div [
 
         ] [
-            str x.state.ClassFocus
-            classDrop (fun e ->
+            str this.state.ClassFocus
+            div [Class "row"][
+                div[Class "col"][
+                    label[(* Labelfor "excludeGrimarillion" *)][str "Exclude Grimarillion"]
+                ]
+                div[Class "col"][
+                    input[Type "checkbox";Checked this.state.ExcludeGrimarillion;OnClick(fun _ -> this.setState(fun s _ -> {s with ExcludeGrimarillion = not s.ExcludeGrimarillion}))]
+
+                ]
+            ]
+            classDrop classes (fun e ->
                 printfn "Changing"
-                x.setState(fun s p ->
+                this.setState(fun s p ->
                     {s with ClassFocus=e}))
-            gdTable (x.getIncludedTags()) gdClasses
+            gdTable (this.getIncludedTags classes) classes
         ]
 
 let inline app props = ofType<App,_,_> props []
