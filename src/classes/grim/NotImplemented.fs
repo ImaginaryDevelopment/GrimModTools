@@ -127,3 +127,38 @@ module Nightblade =
       notImplemented
     ]
   }
+module Necromancer =
+  let theme = D3
+  module Skills =
+    let notImplemented =
+      {
+        name="not implemented"
+        usage= Active
+        tags = [
+            Damage aether
+            Damage acid
+            Damage bleeding
+            // Damage burn
+            Damage cold
+            Damage decay
+            // Damage electrocute
+            // Damage fire
+            // Damage frostburn
+            // Damage lightning
+            Damage physical
+            Damage poison
+            Damage pierce
+            // Damage trauma
+            Damage vitality
+            Damage weapon
+        ]
+        mods = []
+      }
+  open Skills
+  let cls = {
+    name="Necromancer"
+    theme=theme
+    skills=[
+      notImplemented
+    ]
+  }
