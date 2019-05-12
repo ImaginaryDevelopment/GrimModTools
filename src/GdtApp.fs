@@ -5,8 +5,9 @@ open Fable.Helpers.React
 open Fable.Helpers.React.Props
 open Fable.Import
 open Fulma
-open Data
+open GrimModTools.Data
 open Schema
+open Components
 // type Model = {
 //     ClassInclude : string list
 // }
