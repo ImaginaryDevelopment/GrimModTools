@@ -4,10 +4,20 @@
         <TargetFramework>netstandard2.0</TargetFramework>
     </PropertyGroup>
     <ItemGroup>
-        <Compile Include="Client.fs" />
+        <Compile Include="AA_Schema.fs" />
+        <Compile Include="AAA_Components.fs" />
+
+        <Compile Include="classes\grim\NotImplemented.fs" />
+        <Compile Include="classes\titan\NotImplemented.fs" />
+        <Compile Include="classes\titan\Rogue.fs" />
+        <Compile Include="Data.fs" />
+        <Compile Include="GdtApp.fs" />
+
+        <Compile Include="Main.fs" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Fable.Core" Version="2.0.3" />
         <PackageReference Include="Fable.Elmish.React" Version="2.2.0" />
+        <PackageReference Include="Fulma" Version="1.0" />
     </ItemGroup>
 </Project>
