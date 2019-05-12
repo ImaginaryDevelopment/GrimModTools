@@ -14,4 +14,12 @@
     <DotNetCliToolReference Include="Microsoft.AspNetCore.Blazor.Cli" Version="0.6.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="GrimModTooling\GrimModTooling.fsproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Watch Include="**\*.cshtml" />
+    <Watch Include="_ViewImports.cshtml" />
+  </ItemGroup>
+
 </Project>
