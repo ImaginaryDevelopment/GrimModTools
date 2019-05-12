@@ -3,6 +3,8 @@ open Schema
 open Schema.DamageShorts
 
 let gdClasses : GdClass list = [
+  Classes.D3.NotImplemented.DemonHunter.cls
+  Classes.D3.NotImplemented.WitchDoctor.cls
   Classes.Grim.NotImplemented.Soldier.cls
   Classes.Grim.NotImplemented.Demolitionist.cls
   Classes.Grim.NotImplemented.Occultist.cls

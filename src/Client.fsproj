@@ -7,6 +7,7 @@
         <Compile Include="AA_Schema.fs" />
         <Compile Include="AAA_Components.fs" />
 
+        <Compile Include="classes\d3\NotImplemented.fs" />
         <Compile Include="classes\grim\NotImplemented.fs" />
         <Compile Include="classes\titan\NotImplemented.fs" />
         <Compile Include="classes\titan\Rogue.fs" />
