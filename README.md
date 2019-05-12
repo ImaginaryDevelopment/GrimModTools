@@ -1,29 +1,37 @@
-GrimModTools
+# SAFE Template
 
-https://imaginarydevelopment.github.io/GrimModTools/
+This template can be used to generate a full-stack web application using the [SAFE Stack](https://safe-stack.github.io/). It was created using the dotnet [SAFE Template](https://safe-stack.github.io/docs/template-overview/). If you want to learn more about the template why not start with the [quick start](https://safe-stack.github.io/docs/quickstart/) guide?
 
-### Contributing
+## Install pre-requisites
 
-# Static Web Generator
+You'll need to install the following pre-requisites in order to build SAFE applications
 
-Simple Fable Node.js app to generate static pages.The main advantages of this approach are:
+* The [.NET Core SDK](https://www.microsoft.com/net/download)
+* [FAKE 5](https://fake.build/) installed as a [global tool](https://fake.build/fake-gettingstarted.html#Install-FAKE)
+* The [Yarn](https://yarnpkg.com/lang/en/docs/install/) package manager (you an also use `npm` but the usage of `yarn` is encouraged).
+* [Node LTS](https://nodejs.org/en/download/) installed for the front end components.
+* If you're running on OSX or Linux, you'll also need to install [Mono](https://www.mono-project.com/docs/getting-started/install/).
 
-- Use the same **React API** that you use on the frontend with [Elmish](https://elmish.github.io/).
-- Use **Fable helpers** for UI, like [Fulma](https://mangelmaxime.github.io/Fulma/).
-- Access to all **npm packages**, like [marked](https://www.npmjs.com/package/marked) or [highlight.js](https://www.npmjs.com/package/highlight.js).
+## Work with the application
 
-## Requirements
+To concurrently run the server and the client components in watch mode use the following command:
 
-- [dotnet SDK](https://www.microsoft.com/net/download/core)
-- [node.js](https://nodejs.org)
-- [yarn](https://yarnpkg.com/en/)
+```bash
+fake build -t Run
+```
 
-> On macOS and Linux you'll need [Mono](http://www.mono-project.com/) to run Paket.
 
-## Installing and building
+## SAFE Stack Documentation
 
-- [Clone this repository](https://github.com/fable-compiler/static-web-generator/)
-- Install dependencies: `yarn`
-- Start compilation and live server: `yarn start`
+You will find more documentation about the used F# components at the following places:
 
-To start your own website, use this project as scaffold. You can also take advantage of [Paket Github dependencies](https://fsprojects.github.io/Paket/github-dependencies.html) to link `src/Helpers` from your project and get new additions more easily. For a more comprehensive example check the [Fable website](https://github.com/fable-compiler/fable-compiler.github.io).
+* [Giraffe](https://github.com/giraffe-fsharp/Giraffe/blob/master/DOCUMENTATION.md)
+* [Fable](https://fable.io/docs/)
+* [Elmish](https://elmish.github.io/elmish/)
+* [Fulma](https://fulma.github.io/Fulma/)
+
+If you want to know more about the full Azure Stack and all of it's components (including Azure) visit the official [SAFE documentation](https://safe-stack.github.io/docs/).
+
+## Troubleshooting
+
+* **fake not found** - If you fail to execute `fake` from command line after installing it as a global tool, you might need to add it to your `PATH` manually: (e.g. `export PATH="$HOME/.dotnet/tools:$PATH"` on unix) - [related GitHub issue](https://github.com/dotnet/cli/issues/9321)
