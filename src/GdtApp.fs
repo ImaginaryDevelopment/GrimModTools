@@ -23,8 +23,9 @@ let inline classDrop classes onChange =
     let kvs = classes |> List.map(fun cls -> cls.name, cls.name)
     select (("No class filter",""):: kvs) None onChange
 
-let gdTable allTags classes : React.ReactElement =
-    let allTagDisplays = getTagDisplays allTags
+type GdTableProps = {allTags:Tag list;classes:GdClass list;classFocus:string;sortByFocus:bool}
+let gdTable (props:GdTableProps): React.ReactElement =
+    let allTagDisplays = getTagDisplays props.allTags
     div [Class "container-fluid"] [
         table [Class "table table-dark"] [
             thead [] [
@@ -35,19 +36,31 @@ let gdTable allTags classes : React.ReactElement =
                 ]
             ]
             tbody [] (
-                classes
+                props.classes
+                |> fun classes ->
+                    if props.sortByFocus then
+                        match props.classes |> List.tryFind(fun cls -> cls.name =props.classFocus) with
+                        | Some cls' ->
+                            props.classes
+                            |> List.sortByDescending(fun cls -> cls.name = cls'.name, props.allTags |> List.filter(fun tg -> GdClass.HasSkillWithTag cls tg && GdClass.HasSkillWithTag cls' tg) |> List.length)
+                        | None -> classes
+
+                    else classes
+
+
+
                 |> List.map(fun cls ->
                     tr [Class <| string cls.theme][
                         yield td[][
                             str cls.name
                         ]
                         yield! (
-                            allTags
-                            |> List.map(GdClass.HasSkillWithTag cls)
-                            |> List.map(fun hasTag ->
-                                td[][
-                                    yield input [Type "checkbox";Disabled true;Checked hasTag]
-                                ]
+                            props.allTags
+                            |> List.map(
+                                GdClass.HasSkillWithTag cls
+                                >> (fun hasTag ->
+                                        td[][ input [Type "checkbox";Disabled true;Checked hasTag] ]
+                                    )
                             )
                         )
                     ]
@@ -57,11 +70,11 @@ let gdTable allTags classes : React.ReactElement =
     ]
 
 type AppProps = AppProps
-type AppState = {ClassFocus: string;ClassCount:int;ExcludeGrimarillion:bool}
+type AppState = {ClassFocus: string;ClassCount:int;ExcludeGrimarillion:bool;SortByFilter:bool}
 
 type App(initProps:AppProps) =
     inherit React.Component<AppProps,AppState>(initProps)
-    do base.setInitState {ClassFocus="";ClassCount=gdClasses.Length;ExcludeGrimarillion=false}
+    do base.setInitState {ClassFocus="";ClassCount=gdClasses.Length;ExcludeGrimarillion=false;SortByFilter=true}
     member x.getFocusedClass () =
         if System.String.IsNullOrWhiteSpace x.state.ClassFocus then
             None
@@ -93,7 +106,7 @@ type App(initProps:AppProps) =
                 printfn "Changing"
                 this.setState(fun s p ->
                     {s with ClassFocus=e}))
-            gdTable (this.getIncludedTags classes) classes
+            gdTable {allTags=this.getIncludedTags classes;classes=classes;classFocus=this.state.ClassFocus;sortByFocus=this.state.SortByFilter}
         ]
 
 let inline app props = ofType<App,_,_> props []
