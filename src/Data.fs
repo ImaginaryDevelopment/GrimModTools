@@ -39,6 +39,8 @@ let gdClasses : GdClass list = [
   Classes.Other.NotImplemented.Necrotic.cls
 ]
 
+let isDamage = function |Damage _ -> true | _ -> false
+let isConversion = function |DirectConversion _ -> true | DoTConversion _ -> true | _ -> false
 let getClassTags (cls:GdClass) =
     cls.skills
     |> List.collect (fun sk ->
@@ -47,14 +49,13 @@ let getClassTags (cls:GdClass) =
         |> List.collect (fun m -> m.tags)
       sk.tags@modTags
     )
+    |> List.filter (isConversion >> not)
 
 let getAllTags classes =
   classes
   |> List.collect getClassTags
   |> List.distinctBy(Tag.ToDisplay)
   |> List.sortBy(fun x ->
-    let isDamage = match x with |Damage _ -> true | _ -> false
-    let isConversion = match x with |DirectConversion _ -> true | DoTConversion _ -> true | _ -> false
-    isConversion, isDamage, string x
+    isConversion x, isDamage x, string x
   )
 let getTagDisplays = List.map (Tag.ToDisplay)

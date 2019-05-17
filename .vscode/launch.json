@@ -15,6 +15,13 @@
             "console": "internalConsole",
         },
         {
+            "name":"Build",
+            "type":"node",
+            "program":"${workspaceFolder}/node_modules/.bin/webpack",
+            "args":["--mode production"],
+
+        },
+        {
             "name": "Debug Client",
             "type": "chrome",
             "request": "launch",
