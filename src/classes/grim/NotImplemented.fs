@@ -61,6 +61,54 @@ module Demolitionist =
 module Occultist =
   let theme = GD
   module Skills =
+    let sigilOfConsumption =
+        {
+            name="Sigil of Consumption"
+            usage= Active
+            tags = [
+                Damage vitality
+                DamageToHealth
+                Area
+                Duration
+                Cooldown
+            ]
+            mods =[
+                {   modname="Destruction"
+                    tags=[
+                     Damage fire
+                     Damage chaos
+                    ]
+                    isGlobal=false
+                }
+            ]
+        }
+    let doomBolt =
+        {
+            name="Doom Bolt"
+            usage=Active
+            tags=[
+                Damage vitality
+                Damage chaos
+                Damage percent
+                Cooldown
+                Area
+            ]
+            mods =[ ]
+        }
+    let solael'sWitchfire =
+        {
+            name="Solael's Witchfire"
+            usage=Toggle
+            tags=[
+                Damage weapon
+                Damage chaos
+            ]
+            mods =[ // TODO: mods
+
+
+            ]
+        }
+
     let notImplemented =
       {
         name="not implemented"
@@ -76,6 +124,7 @@ module Occultist =
           Damage fire
           Damage lightning
           Damage physical
+          Pet
         //   Damage pierce
           Damage poison
         //   Damage trauma

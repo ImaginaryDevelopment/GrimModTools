@@ -73,6 +73,11 @@ type Tag =
   // requires shield, 2h, ranged, dual,etc...
   |TagHandRestriction of req:string
   |Damage of Damage
+  |Pet
+  |DamageToHealth
+  |Area
+  |Cooldown
+  |Duration
   |Usage
   with
     static member ToDisplay =
